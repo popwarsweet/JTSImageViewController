@@ -53,6 +53,8 @@ extern CGFloat const JTSImageViewController_DefaultBackgroundBlurRadius;
 
 @property (strong, nonatomic, readonly) UIImage *image;
 
+@property (assign, nonatomic, readwrite) BOOL showsProgressIndicator; // defaults to YES
+
 @property (assign, nonatomic, readonly) JTSImageViewControllerMode mode;
 
 @property (assign, nonatomic, readonly) JTSImageViewControllerBackgroundOptions backgroundOptions;

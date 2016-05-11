@@ -134,6 +134,7 @@ typedef struct {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        _showsProgressIndicator = YES;
         _imageInfo = imageInfo;
         _currentSnapshotRotationTransform = CGAffineTransformIdentity;
         _mode = mode;
@@ -472,23 +473,25 @@ typedef struct {
     
     [self setupImageModeGestureRecognizers];
     
-    self.progressContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 128.0f, 128.0f)];
-    [self.view addSubview:self.progressContainer];
-    self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-    self.progressView.progress = 0;
-    self.progressView.tintColor = [UIColor whiteColor];
-    self.progressView.trackTintColor = [UIColor darkGrayColor];
-    CGRect progressFrame = self.progressView.frame;
-    progressFrame.size.width = 128.0f;
-    self.progressView.frame = progressFrame;
-    self.progressView.center = CGPointMake(64.0f, 64.0f);
-    self.progressView.alpha = 0;
-    [self.progressContainer addSubview:self.progressView];
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    self.spinner.center = CGPointMake(64.0f, 64.0f);
-    [self.spinner startAnimating];
-    [self.progressContainer addSubview:self.spinner];
-    self.progressContainer.alpha = 0;
+    if (self.showsProgressIndicator) {
+        self.progressContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 128.0f, 128.0f)];
+        [self.view addSubview:self.progressContainer];
+        self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+        self.progressView.progress = 0;
+        self.progressView.tintColor = [UIColor whiteColor];
+        self.progressView.trackTintColor = [UIColor darkGrayColor];
+        CGRect progressFrame = self.progressView.frame;
+        progressFrame.size.width = 128.0f;
+        self.progressView.frame = progressFrame;
+        self.progressView.center = CGPointMake(64.0f, 64.0f);
+        self.progressView.alpha = 0;
+        [self.progressContainer addSubview:self.progressView];
+        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.spinner.center = CGPointMake(64.0f, 64.0f);
+        [self.spinner startAnimating];
+        [self.progressContainer addSubview:self.spinner];
+        self.progressContainer.alpha = 0;
+    }
     
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.scrollView];
     
