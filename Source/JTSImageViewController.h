@@ -49,6 +49,8 @@ extern CGFloat const JTSImageViewController_DefaultBackgroundBlurRadius;
 
 @property (strong, nonatomic, readonly) UIImageView *imageView;
 
+@property (strong, nonatomic, readwrite) UIView *customContentView; // will be placed on top of imageView if non-nil
+
 @property (strong, nonatomic, readonly) UIImage *image;
 
 @property (assign, nonatomic, readonly) JTSImageViewControllerMode mode;

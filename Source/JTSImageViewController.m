@@ -444,7 +444,7 @@ typedef struct {
     CGRect referenceFrameInMyView = [self.view convertRect:referenceFrameInWindow fromView:nil];
     
     _imageView = [[UIImageView alloc] initWithFrame:referenceFrameInMyView];
-    self.imageView.backgroundColor = [UIColor greenColor];
+    self.imageView.backgroundColor = [UIColor clearColor];
     self.imageView.layer.cornerRadius = self.imageInfo.referenceCornerRadius;
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.imageView.userInteractionEnabled = YES;
@@ -455,6 +455,13 @@ typedef struct {
         if ([self.optionsDelegate imageViewerShouldFadeThumbnailsDuringPresentationAndDismissal:self]) {
             self.imageView.alpha = 0;
         }
+    }
+    
+    // add custom content view if non-nil
+    if (self.customContentView != nil) {
+        [self.imageView addSubview:self.customContentView];
+        self.customContentView.frame = self.imageView.bounds;
+        self.customContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
     
     // We'll add the image view to either the scroll view
