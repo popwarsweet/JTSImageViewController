@@ -172,6 +172,10 @@ typedef struct {
         return;
     }
     
+    // cancel running tasks
+    [_imageDownloadDataTask cancel];
+    [self cancelProgressTimer];
+    
     _flags.isPresented = NO;
     
     if (self.mode == JTSImageViewControllerMode_AltText) {
