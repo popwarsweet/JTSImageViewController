@@ -94,7 +94,6 @@ typedef struct {
 @property (strong, nonatomic) UIView *snapshotView;
 @property (strong, nonatomic) UIView *blurredSnapshotView;
 @property (strong, nonatomic) UIView *blackBackdrop;
-@property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UITextView *textView;
 @property (strong, nonatomic) UIProgressView *progressView;
@@ -444,7 +443,8 @@ typedef struct {
     CGRect referenceFrameInWindow = [self.imageInfo.referenceView convertRect:self.imageInfo.referenceRect toView:nil];
     CGRect referenceFrameInMyView = [self.view convertRect:referenceFrameInWindow fromView:nil];
     
-    self.imageView = [[UIImageView alloc] initWithFrame:referenceFrameInMyView];
+    _imageView = [[UIImageView alloc] initWithFrame:referenceFrameInMyView];
+    self.imageView.backgroundColor = [UIColor greenColor];
     self.imageView.layer.cornerRadius = self.imageInfo.referenceCornerRadius;
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.imageView.userInteractionEnabled = YES;
@@ -711,7 +711,7 @@ typedef struct {
                      if (weakSelf.image) {
                          endFrameForImageView = [weakSelf resizedFrameForAutorotatingImageView:weakSelf.image.size];
                      } else {
-                         endFrameForImageView = [weakSelf resizedFrameForAutorotatingImageView:weakSelf.imageInfo.referenceRect.size];
+                         endFrameForImageView = [weakSelf resizedFrameForAutorotatingImageView:weakSelf.imageInfo.referenceViewNaturalSize];
                      }
                      weakSelf.imageView.frame = endFrameForImageView;
                      
@@ -1470,7 +1470,7 @@ typedef struct {
         if (self.image) {
             self.imageView.frame = [self resizedFrameForAutorotatingImageView:self.image.size];
         } else {
-            self.imageView.frame = [self resizedFrameForAutorotatingImageView:self.imageInfo.referenceRect.size];
+            self.imageView.frame = [self resizedFrameForAutorotatingImageView:self.imageInfo.referenceViewNaturalSize];
         }
         self.scrollView.contentSize = self.imageView.frame.size;
         self.scrollView.contentInset = [self contentInsetForScrollView:self.scrollView.zoomScale];
@@ -1493,8 +1493,10 @@ typedef struct {
     UIEdgeInsets inset = UIEdgeInsetsZero;
     CGFloat boundsHeight = self.scrollView.bounds.size.height;
     CGFloat boundsWidth = self.scrollView.bounds.size.width;
-    CGFloat contentHeight = (self.image.size.height > 0) ? self.image.size.height : boundsHeight;
-    CGFloat contentWidth = (self.image.size.width > 0) ? self.image.size.width : boundsWidth;
+    CGFloat contentHeight = (self.image.size.height > 0) ? self.image.size.height :
+                                (self.imageInfo.referenceViewNaturalSize.height > 0) ? self.imageInfo.referenceViewNaturalSize.height : boundsHeight;
+    CGFloat contentWidth = (self.image.size.width > 0) ? self.image.size.width :
+                                (self.imageInfo.referenceViewNaturalSize.width > 0) ? self.imageInfo.referenceViewNaturalSize.width : boundsWidth;
     CGFloat minContentHeight;
     CGFloat minContentWidth;
     if (contentHeight > contentWidth) {

@@ -18,6 +18,7 @@
 @property (copy, nonatomic) NSString *title;
 @property (assign, nonatomic) CGRect referenceRect;
 @property (strong, nonatomic) UIView *referenceView;
+@property (assign, nonatomic) CGSize referenceViewNaturalSize;
 @property (assign, nonatomic) UIViewContentMode referenceContentMode;
 @property (assign, nonatomic) CGFloat referenceCornerRadius;
 @property (copy, nonatomic) NSMutableDictionary *userInfo;
